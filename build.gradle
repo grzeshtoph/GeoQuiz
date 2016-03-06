@@ -39,4 +39,5 @@ ext {
     runnerVersion = '0.4.1'
     rulesVersion = '0.4.1'
     espressoVersion = '2.2.1'
+    guavaVersion = '18.0'
 }

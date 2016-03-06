@@ -52,6 +52,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+    compile "com.google.guava:guava:$rootProject.ext.guavaVersion"
 
     // Dependecies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"

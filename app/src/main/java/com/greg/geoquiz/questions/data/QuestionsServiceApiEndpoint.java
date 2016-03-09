@@ -24,6 +24,6 @@ public final class QuestionsServiceApiEndpoint {
     }
 
     public static ArrayMap<String, Question> loadPersistedQuestions() {
-        return DATA;
+        return new ArrayMap<>(DATA);
     }
 }

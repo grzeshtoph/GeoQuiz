@@ -4,8 +4,6 @@ import android.support.v4.util.ArrayMap;
 
 import org.junit.Test;
 
-import java.util.Collection;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;

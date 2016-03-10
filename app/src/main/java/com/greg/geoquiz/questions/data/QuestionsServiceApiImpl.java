@@ -3,6 +3,8 @@ package com.greg.geoquiz.questions.data;
 import android.os.Handler;
 import android.support.v4.util.ArrayMap;
 
+import com.greg.geoquiz.Injection;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class QuestionsServiceApiImpl implements QuestionsServiceApi {
     @Override
     public void getAllQuestions(final QuestionsServiceCallback<List<Question>> callback) {
         //Simulate network by delaying the execution.
-        Handler handler = new Handler();
+        Handler handler = Injection.provideHandler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

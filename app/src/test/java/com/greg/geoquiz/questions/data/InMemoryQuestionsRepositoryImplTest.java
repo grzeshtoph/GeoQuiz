@@ -13,9 +13,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -84,5 +87,38 @@ public class InMemoryQuestionsRepositoryImplTest {
         verifyNoMoreInteractions(mQuestionsServiceApi);
 
         assertThat("Assert cached questions are the same as first time", cachedQuestions, is(sameInstance(cachedQuestions)));
+    }
+
+    @Test
+    public void test_getAllQuestions_twice_withCacheRefresh() throws Exception {
+        assertThat("Assert cached questions being null", mQuestionsRepository.mCachedQuestions, is(nullValue()));
+
+        //1st call
+        mQuestionsRepository.getAllQuestions(mLoadQuestionsCallback);
+        // capture the input callback for the question service API
+        verify(mQuestionsServiceApi).getAllQuestions(mQuestionsServiceCallbackCaptor.capture());
+        // force call on the callback captor
+        mQuestionsServiceCallbackCaptor.getValue().onLoaded(QUESTIONS);
+        // verify the callback for the question service API was called
+        verify(mLoadQuestionsCallback).onQuestionsLoaded(eq(QUESTIONS));
+
+        assertThat("Assert cached questions are there", mQuestionsRepository.mCachedQuestions, is(equalTo(QUESTIONS)));
+
+        // reset the mocks
+        reset(mQuestionsServiceApi, mLoadQuestionsCallback);
+
+        // clear the cache
+        mQuestionsRepository.refreshData();
+
+        //2nd call
+        mQuestionsRepository.getAllQuestions(mLoadQuestionsCallback);
+        // capture the input callback for the question service API
+        verify(mQuestionsServiceApi).getAllQuestions(mQuestionsServiceCallbackCaptor.capture());
+        // force call on the callback captor
+        mQuestionsServiceCallbackCaptor.getValue().onLoaded(QUESTIONS);
+        // verify the callback for the question service API was called
+        verify(mLoadQuestionsCallback).onQuestionsLoaded(eq(QUESTIONS));
+
+        assertThat("Assert cached questions are there", mQuestionsRepository.mCachedQuestions, is(equalTo(QUESTIONS)));
     }
 }

@@ -1,12 +1,12 @@
 package com.greg.geoquiz;
 
+import android.support.test.espresso.ViewAssertion;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.common.base.Strings;
 import com.greg.geoquiz.questions.data.Question;
 import com.greg.geoquiz.questions.data.QuestionsServiceApiEndpoint;
 
@@ -25,6 +25,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.IsNot.not;
@@ -41,21 +42,26 @@ public class QuizActivityTest {
 
     private List<Question> questions = new ArrayList<>(QuestionsServiceApiEndpoint.loadPersistedQuestions().values());
 
-    private Question foundQuestion;
-
     @Test
     public void test_answerQuestions() throws Exception {
-        verifyLoadingQuestionsText();
+        assertLoadingQuestionsStage();
 
+        onView(withId(R.id.false_button)).check(matches(isEnabled()));
+        onView(withId(R.id.true_button)).check(matches(isEnabled()));
+        onView(withId(R.id.next_button)).check(matches(isEnabled()));
         onView(withId(R.id.question_text_view)).check(matches(withOneOfTheQuestionsText()));
         onView(withId(R.id.true_button)).perform(click());
 
         onView(withText(R.string.incorrect_toast)).inRoot(withDecorView(not(mQuizAtivityTestRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
-    private void verifyLoadingQuestionsText() throws InterruptedException {
+    private void assertLoadingQuestionsStage() throws InterruptedException {
+        onView(withId(R.id.false_button)).check(matches(not(isEnabled())));
+        onView(withId(R.id.true_button)).check(matches(not(isEnabled())));
+        onView(withId(R.id.next_button)).check(matches(not(isEnabled())));
         onView(withId(R.id.question_text_view)).check(matches(withText("Loading questions...")));
         Thread.sleep(3000L);
+
     }
 
     private Matcher<View> withOneOfTheQuestionsText() {
@@ -74,7 +80,6 @@ public class QuizActivityTest {
             private boolean isOneOfTheQuestions(String text) {
                 for (Question question : questions) {
                     if (question.getQuestionText().equals(text))
-                        foundQuestion = question;
                         return true;
                 }
                 return false;

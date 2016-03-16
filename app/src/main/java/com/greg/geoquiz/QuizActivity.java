@@ -39,21 +39,33 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onQuestionsLoaded(List<Question> questions) {
                 QuizActivity.this.questions = ImmutableList.copyOf(questions);
-                mQuestionTextView.setText(questions.get(mCurrentIndex).getQuestionText());
+                updateQuestion();
 
                 mTrueButton = (Button) findViewById(R.id.true_button);
+                mTrueButton.setEnabled(true);
                 mTrueButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(QuizActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
+                        checkAnswer(true);
                     }
                 });
 
                 mFalseButton = (Button) findViewById(R.id.false_button);
+                mFalseButton.setEnabled(true);
                 mFalseButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(QuizActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT).show();
+                        checkAnswer(false);
+                    }
+                });
+
+                mNextButton = (Button) findViewById(R.id.next_button);
+                mNextButton.setEnabled(true);
+                mNextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCurrentIndex = (mCurrentIndex + 1) % QuizActivity.this.questions.size();
+                        updateQuestion();
                     }
                 });
             }
@@ -80,5 +92,16 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateQuestion() {
+        mQuestionTextView.setText(questions.get(mCurrentIndex).getQuestionText());
+    }
+
+    private void checkAnswer(boolean userPressedTrue) {
+        boolean isAnswerTrue = questions.get(mCurrentIndex).isAnswerTrue();
+        int messageResId = (userPressedTrue == isAnswerTrue) ? R.string.correct_toast :
+                R.string.incorrect_toast;
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
 }

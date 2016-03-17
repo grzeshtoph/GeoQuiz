@@ -49,7 +49,7 @@ public class QuizActivityTest {
         onView(withId(R.id.false_button)).check(matches(isEnabled()));
         onView(withId(R.id.true_button)).check(matches(isEnabled()));
         onView(withId(R.id.next_button)).check(matches(isEnabled()));
-        onView(withId(R.id.question_text_view)).check(matches(withOneOfTheQuestionsText()));
+        onView(withId(R.id.question_text_view)).check(matches(withOneOfTheQuestionsText())).check(matches(isEnabled()));
         onView(withId(R.id.true_button)).perform(click());
 
         onView(withText(R.string.incorrect_toast)).inRoot(withDecorView(not(mQuizAtivityTestRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
@@ -59,7 +59,8 @@ public class QuizActivityTest {
         onView(withId(R.id.false_button)).check(matches(not(isEnabled())));
         onView(withId(R.id.true_button)).check(matches(not(isEnabled())));
         onView(withId(R.id.next_button)).check(matches(not(isEnabled())));
-        onView(withId(R.id.question_text_view)).check(matches(withText("Loading questions...")));
+        onView(withId(R.id.question_text_view)).check(matches(withText("Loading questions...")))
+                .check(matches(not(isEnabled())));
         Thread.sleep(3000L);
 
     }

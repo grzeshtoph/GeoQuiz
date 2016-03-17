@@ -1,8 +1,8 @@
 package com.greg.geoquiz.questions.data;
 
-import android.support.v4.util.ArrayMap;
-
 import org.junit.Test;
+
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -18,8 +18,8 @@ import static org.hamcrest.Matchers.sameInstance;
 public class QuestionsServiceApiEndpointTest {
     @Test
     public void test_loadPersistedQuestions() throws Exception {
-        ArrayMap<String, Question> data1 = QuestionsServiceApiEndpoint.loadPersistedQuestions();
-        ArrayMap<String, Question> data2 = QuestionsServiceApiEndpoint.loadPersistedQuestions();
+        Map<String, Question> data1 = QuestionsServiceApiEndpoint.loadPersistedQuestions();
+        Map<String, Question> data2 = QuestionsServiceApiEndpoint.loadPersistedQuestions();
 
         assertThat(data1, is(notNullValue()));
         assertThat(data1.size(), is(equalTo(5)));
@@ -34,7 +34,7 @@ public class QuestionsServiceApiEndpointTest {
         assertQuestion(data1, questions[4]);
     }
 
-    private void assertQuestion(ArrayMap<String, Question> data, Question question) {
+    private void assertQuestion(Map<String, Question> data, Question question) {
         assertThat(question.getQuestionText(), not(isEmptyOrNullString()));
         assertThat(question.getId(), is(notNullValue()));
         Question question1 = data.get(question.getId());

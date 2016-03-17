@@ -6,5 +6,6 @@
     <string name="correct_toast">Correct!</string>
     <string name="incorrect_toast">Incorrect!</string>
     <string name="next_button">Next</string>
+    <string name="previous_button">Prev</string>
     <string name="questions_default">Loading questions...</string>
 </resources>

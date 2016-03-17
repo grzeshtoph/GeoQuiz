@@ -14,7 +14,8 @@
         android:id="@+id/question_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/elem_margin" />
+        android:padding="@dimen/elem_margin"
+        android:enabled="false"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -37,12 +38,29 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/next_button"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next_button"
-        android:enabled="false"></Button>
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/previous_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:src="@drawable/arrow_left"
+            android:padding="@dimen/drawable_padding"></ImageButton>
+
+        <ImageButton
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:src="@drawable/arrow_right"
+            android:padding="@dimen/drawable_padding"></ImageButton>
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

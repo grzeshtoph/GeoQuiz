@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
-    private Button mNextButton;
+    private ImageButton mPreviousButton;
+    private ImageButton mNextButton;
     private TextView mQuestionTextView;
 
     List<Question> questions = null;
@@ -59,15 +61,17 @@ public class QuizActivity extends AppCompatActivity {
                     }
                 });
 
-                mNextButton = (Button) findViewById(R.id.next_button);
+                mPreviousButton = (ImageButton) findViewById(R.id.previous_button);
+                mPreviousButton.setEnabled(true);
+                mPreviousButton.setOnClickListener(new ProgressQuestionOnClickListener(false));
+
+                mNextButton = (ImageButton) findViewById(R.id.next_button);
                 mNextButton.setEnabled(true);
-                mNextButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCurrentIndex = (mCurrentIndex + 1) % QuizActivity.this.questions.size();
-                        updateQuestion();
-                    }
-                });
+                mNextButton.setOnClickListener(new ProgressQuestionOnClickListener(true));
+
+                mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+                mQuestionTextView.setEnabled(true);
+                mQuestionTextView.setOnClickListener(new ProgressQuestionOnClickListener(true));
             }
         });
     }
@@ -103,5 +107,23 @@ public class QuizActivity extends AppCompatActivity {
         int messageResId = (userPressedTrue == isAnswerTrue) ? R.string.correct_toast :
                 R.string.incorrect_toast;
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
+    private class ProgressQuestionOnClickListener implements View.OnClickListener {
+        private final boolean mForward;
+
+        public ProgressQuestionOnClickListener(boolean forward) {
+            mForward = forward;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final int questionsSize = questions.size();
+
+            mCurrentIndex = mForward ? (mCurrentIndex + 1) % questionsSize
+                    :  (mCurrentIndex == 0 ? questionsSize - 1 : mCurrentIndex - 1);
+
+            updateQuestion();
+        }
     }
 }

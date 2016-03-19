@@ -3,6 +3,7 @@ package com.greg.geoquiz;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.greg.geoquiz.questions.data.QuestionsRepository;
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
+    private static final String TAG = QuizActivity.class.getName();
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -31,6 +33,7 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,6 +77,37 @@ public class QuizActivity extends AppCompatActivity {
                 mQuestionTextView.setOnClickListener(new ProgressQuestionOnClickListener(true));
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onPause() called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Injection.provideQuestionsRepository().refreshData();
+        Log.d(TAG, "onDestroy() called");
     }
 
     @Override
